@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #0A0A0F;
+  --color-foreground: #ffffff;
+  --color-teal: #00D4AA;
+  --color-purple: #8B5CF6;
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-dm-sans: "DM Sans", system-ui, sans-serif;
+  --font-space-mono: "Space Mono", "Courier New", monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0A0A0F;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+
+@keyframes bounce-x {
+  0%, 100% { transform: translateX(-4px); }
+  50%       { transform: translateX(0px); }
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  }
+}
+
+@keyframes float-up {
+  0%   { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0);   filter: blur(0);   }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 0 0 rgba(0, 212, 170, 0.5); }
+  50%       { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0, 212, 170, 0);  }
+}
+
+@keyframes scroll-chevron {
+  0%, 100% { transform: translateY(0);   opacity: 0.35; }
+  50%       { transform: translateY(6px); opacity: 0.75; }
+}
+
+@keyframes banner-arrow-glow {
+  0%, 100% { color: rgba(255,255,255,0.45); }
+  50%       { color: rgba(0, 212, 170, 0.95); text-shadow: 0 0 10px rgba(0, 212, 170, 0.5); }
+}
+
+@keyframes equator-pulse {
+  0%, 100% { opacity: 0.10; }
+  50%       { opacity: 0.25; }
+}
+
+@keyframes radial-breathe {
+  0%, 100% { opacity: 0.30; transform: scale(1);    }
+  50%       { opacity: 0.50; transform: scale(1.08); }
+}
+
+/* ─── Utility classes ───────────────────────────────────── */
+
+.word-float {
+  animation: float-up 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.animate-bounce-x {
+  animation: bounce-x 1.4s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.animate-scroll-chevron {
+  animation: scroll-chevron 1.6s ease-in-out infinite;
+}
+
+.animate-banner-arrow {
+  animation: banner-arrow-glow 2.4s ease-in-out infinite;
+}
+
+.animate-equator-pulse {
+  animation: equator-pulse 3.2s ease-in-out infinite;
+}
+
+.animate-radial-breathe {
+  animation: radial-breathe 4s ease-in-out infinite;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: #0A0A0F; }
+::-webkit-scrollbar-thumb  { background: rgba(0, 212, 170, 0.25); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 212, 170, 0.55); }
