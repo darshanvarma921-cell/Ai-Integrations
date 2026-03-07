@@ -165,7 +165,7 @@ export function Hero() {
 
           {/* Secondary CTA */}
           <a
-            href="#"
+            href="/demo"
             className="group relative flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-medium text-white transition-all duration-300"
             style={{
               fontFamily: "var(--font-dm-sans)",
