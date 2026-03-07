@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { EntropyGlobe } from "@/components/ui/entropy-globe";
 import { ScrollIndicator } from "./scroll-indicator";
 
@@ -164,7 +165,7 @@ export function Hero() {
           </a>
 
           {/* Secondary CTA */}
-          <a
+          <Link
             href="/demo"
             className="group relative flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-medium text-white transition-all duration-300"
             style={{
@@ -186,7 +187,7 @@ export function Hero() {
             }}
           >
             ⚡ View Live Demo
-          </a>
+          </Link>
         </div>
       </div>
 
