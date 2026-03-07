@@ -38,7 +38,7 @@ export function Navbar() {
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#00D4AA]" />
           </span>
           <span className="text-[15px] font-bold tracking-tight text-white">
-            Prevalent AI
+            Adopt AI
           </span>
         </a>
 

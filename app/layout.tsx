@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Prevalent AI — Healthcare Integration Infrastructure",
+  title: "Adopt AI — Healthcare Integration Infrastructure",
   description:
     "AI-powered integration infrastructure for hospitals, clinics, and health networks. Connect your HIS, EHR, and billing systems without replacing what already works.",
 };
