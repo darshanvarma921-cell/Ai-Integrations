@@ -475,8 +475,8 @@ const CARDS = [
         <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
       </svg>
     ),
-    title: 'Adaptive Integration',
-    desc:  'The AI layer learns system patterns and optimises routing, even when legacy systems behave unpredictably.',
+    title: 'Plug-In Any AI Tool',
+    desc:  'Radiology AI, clinical decision support, predictive analytics — connect any AI product to your hospital\'s existing infrastructure without custom builds or vendor lock-in.',
   },
   {
     icon: (
@@ -485,7 +485,7 @@ const CARDS = [
       </svg>
     ),
     title: 'Self-Healing Networks',
-    desc:  'The platform automatically reroutes and recovers when connections drop or systems go offline.',
+    desc:  'When systems update, APIs change, or new tools come online, the platform automatically adapts routing and maintains data flow without manual intervention.',
   },
 ] as const;
 
@@ -493,8 +493,9 @@ const CARDS = [
 const HEADLINES = [
   'See AI Integration in Action',
   'Connecting Every System',
+  'Bringing AI Into Every Workflow',
+  'One Platform. Every Tool.',
   'Unifying Patient Data Flows',
-  'Intelligence Across Silos',
 ];
 
 export default function DemoPage() {
@@ -587,7 +588,7 @@ export default function DemoPage() {
             animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
             transition={{ duration: 0.8, delay: 1.2, ease: 'easeOut' }}
           >
-            Watch how Adopt AI connects fragmented hospital systems into a unified intelligence layer.
+            Watch how Adopt AI connects hospital systems and AI tools into a unified intelligence layer — so new technology works with what&apos;s already there.
           </motion.p>
         </div>
 
@@ -602,7 +603,7 @@ export default function DemoPage() {
             className="text-[11px] tracking-[0.2em] uppercase"
             style={{ color: 'rgba(255,255,255,0.22)', fontFamily: "'Space Mono','Courier New',monospace" }}
           >
-            5 Systems · 240 Nodes · Real-Time Sync
+            5 Systems · 3 AI Tools · Real-Time Orchestration
           </p>
           <div className="flex flex-col items-center gap-1.5">
             <span
@@ -651,7 +652,7 @@ export default function DemoPage() {
             style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '3rem' }}
           >
             <h2 className="text-2xl md:text-3xl font-semibold text-white mb-6">
-              Ready to connect your systems?
+              Ready to connect your systems — and the AI tools that will transform them?
             </h2>
             <a
               href="#"
