@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // ── Cluster definitions ────────────────────────────────────────────────────────
 // cx/cy as fraction of viewport. ordered=true → teal family, false → purple family
@@ -489,7 +490,23 @@ const CARDS = [
 ] as const;
 
 // ── Page ───────────────────────────────────────────────────────────────────────
+const HEADLINES = [
+  'See AI Integration in Action',
+  'Connecting Every System',
+  'Unifying Patient Data Flows',
+  'Intelligence Across Silos',
+];
+
 export default function DemoPage() {
+  const [headlineIndex, setHeadlineIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeadlineIndex(prev => (prev + 1) % HEADLINES.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div
       className="relative min-h-screen"
@@ -534,28 +551,53 @@ export default function DemoPage() {
 
         {/* Centre content */}
         <div className="flex flex-col items-center text-center gap-4">
-          <p
+          {/* LIVE SIMULATION label — blur-fades in first */}
+          <motion.p
             className="text-[11px] tracking-[0.3em] uppercase font-medium"
             style={{ color: '#10B981', fontFamily: "'Space Mono','Courier New',monospace" }}
+            initial={{ opacity: 0, filter: 'blur(4px)', y: 4 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
           >
             Live Simulation
-          </p>
-          <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white max-w-2xl leading-tight"
-            style={{ textShadow: '0 0 48px rgba(0,0,0,0.9)' }}
-          >
-            See AI Integration in Action
-          </h1>
-          <p
+          </motion.p>
+
+          {/* Cycling headline — fixed-height container prevents layout shift */}
+          <div className="flex items-center justify-center min-h-[80px] sm:min-h-[100px] lg:min-h-[120px]">
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={headlineIndex}
+                className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white max-w-2xl leading-tight"
+                style={{ textShadow: '0 0 48px rgba(0,0,0,0.9)' }}
+                initial={{ opacity: 0, filter: 'blur(8px)', y: 8 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                exit={{ opacity: 0, filter: 'blur(8px)', y: -8 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+              >
+                {HEADLINES[headlineIndex]}
+              </motion.h1>
+            </AnimatePresence>
+          </div>
+
+          {/* Subtitle — blur-fades in once on load */}
+          <motion.p
             className="text-base max-w-md leading-relaxed"
             style={{ color: '#9CA3AF', textShadow: '0 0 24px rgba(0,0,0,0.95)' }}
+            initial={{ opacity: 0, filter: 'blur(6px)', y: 6 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2, ease: 'easeOut' }}
           >
             Watch how Adopt AI connects fragmented hospital systems into a unified intelligence layer.
-          </p>
+          </motion.p>
         </div>
 
         {/* Bottom: stats + scroll indicator */}
-        <div className="flex flex-col items-center gap-4">
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          initial={{ opacity: 0, filter: 'blur(4px)', y: 4 }}
+          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+          transition={{ duration: 0.6, delay: 1.6, ease: 'easeOut' }}
+        >
           <p
             className="text-[11px] tracking-[0.2em] uppercase"
             style={{ color: 'rgba(255,255,255,0.22)', fontFamily: "'Space Mono','Courier New',monospace" }}
@@ -578,7 +620,7 @@ export default function DemoPage() {
               <path d="M1 1L6 7L11 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ── Below fold: cards + CTA ───────────────────────────────────────── */}
