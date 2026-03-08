@@ -37,18 +37,18 @@ export function Navbar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00D4AA] opacity-50" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#00D4AA]" />
           </span>
-          <span className="text-[15px] font-bold tracking-tight text-white">
+          <span className="text-[15px] font-normal tracking-tight text-white">
             Adopt AI
           </span>
         </a>
 
         {/* Center nav links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {NAV_LINKS.map((link) => (
             <a
               key={link}
               href="#"
-              className="text-[13px] text-white/45 hover:text-white/90 transition-colors duration-200"
+              className="text-[13px] font-normal text-[#9CA3AF] hover:text-white transition-colors duration-200"
               style={{ fontFamily: "var(--font-dm-sans)" }}
             >
               {link}
@@ -59,19 +59,17 @@ export function Navbar() {
         {/* CTA */}
         <a
           href="#"
-          className="hidden md:inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-semibold text-[#0A0A0F] transition-all duration-300"
+          className="hidden md:inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-normal text-white transition-all duration-300 hover:border-white"
           style={{
-            background: "#00D4AA",
+            border: "1px solid #333",
+            background: "transparent",
             fontFamily: "var(--font-dm-sans)",
-            boxShadow: "0 0 18px rgba(0,212,170,0.35)",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.boxShadow =
-              "0 0 32px rgba(0,212,170,0.6)";
+            (e.currentTarget as HTMLElement).style.borderColor = "#ffffff";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.boxShadow =
-              "0 0 18px rgba(0,212,170,0.35)";
+            (e.currentTarget as HTMLElement).style.borderColor = "#333";
           }}
         >
           Book a Demo

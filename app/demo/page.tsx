@@ -23,13 +23,6 @@ const SECONDARY_PAIRS: [number, number][] = [
 ];
 const SECONDARY_DELAYS = [6200, 7000, 7800, 8600, 9400, 10200, 11000, 11800];
 
-const HEADLINES = [
-  "See AI Integration in Action",
-  "Every System. Connected.",
-  "Bringing AI Into Every Workflow",
-  "One Platform. Every Tool.",
-  "Unifying Patient Data Flows",
-];
 
 /* ─── Helpers ───────────────────────────────────────────────────────── */
 function rgba(r: number, g: number, b: number, a: number) {
@@ -82,11 +75,11 @@ export default function DemoPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const initTimeRef = useRef<number | null>(null);
   const [phase, setPhase] = useState<"idle" | "running">("idle");
-  const [showHeadline, setShowHeadline] = useState(false);
-  const [headlineIndex, setHeadlineIndex] = useState(0);
+  const [textPhase, setTextPhase] = useState<"hidden" | "showing" | "faded">("hidden");
   const [showScrollHint, setShowScrollHint] = useState(false);
 
   /* ── Scroll fade ─────────────────────────────────────────── */
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -97,15 +90,6 @@ export default function DemoPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  /* ── Headline cycling ────────────────────────────────────── */
-  useEffect(() => {
-    if (!showHeadline) return;
-    const id = setInterval(() => {
-      setHeadlineIndex((i) => (i + 1) % HEADLINES.length);
-    }, 3500);
-    return () => clearInterval(id);
-  }, [showHeadline]);
 
   /* ── Canvas animation ────────────────────────────────────── */
   useEffect(() => {
@@ -401,7 +385,8 @@ export default function DemoPage() {
   const handleInit = () => {
     initTimeRef.current = Date.now();
     setPhase("running");
-    setTimeout(() => setShowHeadline(true), 3000);
+    setTextPhase("showing");
+    setTimeout(() => setTextPhase("faded"), 4200); // 0.6s fade-in + 3s display + buffer
     setTimeout(() => setShowScrollHint(true), 14000);
   };
 
@@ -417,81 +402,61 @@ export default function DemoPage() {
       {/* Viewport overlay */}
       <div className="relative z-10 flex h-screen flex-col items-center justify-center pointer-events-none select-none">
 
-        {/* Pre-headline wordmark */}
-        <AnimatePresence>
-          {!showHeadline && (
-            <motion.div
-              key="wordmark"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.7 }}
-              className="text-center mb-10"
-            >
-              <p
-                className="text-[11px] tracking-[0.35em] uppercase mb-3"
-                style={{ color: "rgba(0,212,170,0.6)", fontFamily: "var(--font-dm-sans)" }}
-              >
-                Adopt AI
-              </p>
-              <h1
-                style={{
-                  fontFamily: "var(--font-playfair)",
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  fontSize: "clamp(42px, 6vw, 80px)",
-                  lineHeight: 1.1,
-                  color: "rgba(255,255,255,0.88)",
-                  textShadow: "0 0 60px rgba(0,212,170,0.2), 0 0 120px rgba(139,92,246,0.12)",
-                  letterSpacing: "-0.02em",
-                  whiteSpace: "pre-line",
-                }}
-              >
-                {phase === "idle" ? "AI Integration,\nMade Simple." : "Connecting\nYour World."}
-              </h1>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* LIVE SIMULATION label — always visible */}
+        <p
+          className="text-[10px] tracking-[0.4em] uppercase mb-10"
+          style={{ color: "rgba(0,212,170,0.5)", fontFamily: "var(--font-dm-sans)" }}
+        >
+          Live Simulation
+        </p>
 
-        {/* Post-init cycling headline */}
-        <AnimatePresence>
-          {showHeadline && (
-            <motion.div
-              key="headline-wrapper"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-10"
-              style={{ minHeight: "clamp(60px,9vw,110px)" }}
+        {/* One-shot headline + subtitle (fades in on init, fades out after 3s) */}
+        {textPhase !== "hidden" && (
+          <div className="text-center mb-10 absolute" style={{ top: "38%" }}>
+            <motion.h1
+              initial={{ opacity: 0, filter: "blur(8px)", y: 8 }}
+              animate={
+                textPhase === "showing"
+                  ? { opacity: 1, filter: "blur(0px)", y: 0 }
+                  : { opacity: 0, filter: "blur(8px)", y: -8 }
+              }
+              transition={{ duration: textPhase === "showing" ? 0.6 : 0.8, ease: "easeOut" }}
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 700,
+                fontSize: "clamp(26px, 4vw, 56px)",
+                lineHeight: 1.1,
+                color: "#ffffff",
+                letterSpacing: "-0.025em",
+              }}
             >
-              <p
-                className="text-[11px] tracking-[0.35em] uppercase mb-3"
-                style={{ color: "rgba(0,212,170,0.6)", fontFamily: "var(--font-dm-sans)" }}
-              >
-                Adopt AI
-              </p>
-              <AnimatePresence mode="wait">
-                <motion.h1
-                  key={headlineIndex}
-                  initial={{ opacity: 0, filter: "blur(8px)", y: 10 }}
-                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                  exit={{ opacity: 0, filter: "blur(8px)", y: -10 }}
-                  transition={{ duration: 0.55, ease: "easeOut" }}
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 700,
-                    fontSize: "clamp(28px, 4.5vw, 64px)",
-                    lineHeight: 1.1,
-                    color: "#ffffff",
-                    letterSpacing: "-0.025em",
-                  }}
-                >
-                  {HEADLINES[headlineIndex]}
-                </motion.h1>
-              </AnimatePresence>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              See AI Integration in Action
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, filter: "blur(6px)", y: 6 }}
+              animate={
+                textPhase === "showing"
+                  ? { opacity: 1, filter: "blur(0px)", y: 0 }
+                  : { opacity: 0, filter: "blur(6px)", y: -6 }
+              }
+              transition={{
+                duration: textPhase === "showing" ? 0.6 : 0.8,
+                delay: textPhase === "showing" ? 0.4 : 0,
+                ease: "easeOut",
+              }}
+              className="mt-4 max-w-[480px] mx-auto"
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 300,
+                fontSize: "clamp(14px, 1.4vw, 17px)",
+                color: "rgba(255,255,255,0.5)",
+                lineHeight: 1.6,
+              }}
+            >
+              Watch how Adopt AI connects hospital systems and AI tools into a unified intelligence layer.
+            </motion.p>
+          </div>
+        )}
 
         {/* Init button */}
         <AnimatePresence>

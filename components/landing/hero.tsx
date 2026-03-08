@@ -100,13 +100,13 @@ export function Hero() {
             Connect
           </span>
 
-          {/* Line 2: "Every System." – DM Sans bold */}
+          {/* Line 2: "Every System." – DM Sans medium */}
           <span
             ref={(el) => { lineRefs.current[1] = el; }}
             className="block mt-1"
             style={{
               fontFamily: "var(--font-dm-sans)",
-              fontWeight: 700,
+              fontWeight: 500,
               fontSize: "clamp(38px, 5.5vw, 72px)",
               lineHeight: 1.12,
               color: "#ffffff",
@@ -116,13 +116,13 @@ export function Hero() {
             Every System.
           </span>
 
-          {/* Line 3: "Elevate Every Outcome." – DM Sans bold */}
+          {/* Line 3: "Elevate Every Outcome." – DM Sans medium */}
           <span
             ref={(el) => { lineRefs.current[2] = el; }}
             className="block"
             style={{
               fontFamily: "var(--font-dm-sans)",
-              fontWeight: 700,
+              fontWeight: 500,
               fontSize: "clamp(38px, 5.5vw, 72px)",
               lineHeight: 1.12,
               color: "#ffffff",
@@ -139,9 +139,9 @@ export function Hero() {
           className="mt-7 max-w-[580px] leading-relaxed"
           style={{
             fontFamily: "var(--font-dm-sans)",
-            fontWeight: 400,
+            fontWeight: 300,
             fontSize: "clamp(15px, 1.5vw, 18px)",
-            color: "rgba(255,255,255,0.55)",
+            color: "#666",
           }}
         >
           AI-powered integration infrastructure for hospitals, clinics, and
@@ -154,39 +154,41 @@ export function Hero() {
           ref={ctaRef}
           className="mt-10 flex flex-wrap items-center justify-center gap-4"
         >
-          {/* Primary CTA */}
+          {/* Primary CTA — ghost pill */}
           <a
             href="#"
-            className="group flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-[14px] font-bold text-[#0A0A0F] transition-all duration-300 hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-            style={{ fontFamily: "var(--font-dm-sans)" }}
-          >
-            Start Exploring
-            <span className="animate-bounce-x inline-block">→</span>
-          </a>
-
-          {/* Secondary CTA */}
-          <Link
-            href="/demo"
-            className="group relative flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-medium text-white transition-all duration-300"
+            className="group flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-normal text-white transition-all duration-300"
             style={{
               fontFamily: "var(--font-dm-sans)",
-              border: "1px solid rgba(255,255,255,0.25)",
-              background: "rgba(255,255,255,0.04)",
+              border: "1px solid #333",
+              background: "transparent",
             }}
             onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.border = "1px solid rgba(0,212,170,0.6)";
-              el.style.background = "rgba(0,212,170,0.08)";
-              el.style.boxShadow = "0 0 24px rgba(0,212,170,0.2)";
+              (e.currentTarget as HTMLElement).style.borderColor = "#ffffff";
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.border = "1px solid rgba(255,255,255,0.25)";
-              el.style.background = "rgba(255,255,255,0.04)";
-              el.style.boxShadow = "none";
+              (e.currentTarget as HTMLElement).style.borderColor = "#333";
             }}
           >
-            ⚡ View Live Demo
+            Start Exploring →
+          </a>
+
+          {/* Secondary CTA — filled green */}
+          <Link
+            href="/demo"
+            className="group relative flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-medium text-black transition-all duration-300"
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              background: "#10B981",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#0EA47A";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#10B981";
+            }}
+          >
+            View Live Demo →
           </Link>
         </div>
       </div>

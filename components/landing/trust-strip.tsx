@@ -28,15 +28,18 @@ export function TrustStrip() {
           Trusted by leading healthcare institutions
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
           {LOGOS.map((name) => (
             <div
               key={name}
-              className="group flex items-center justify-center rounded-xl border border-white/7 bg-white/3 px-6 py-3.5 transition-all duration-300 hover:border-white/15 hover:bg-white/6"
-              style={{ minWidth: "130px" }}
+              className="group flex items-center justify-center px-6 py-3.5 transition-all duration-300"
+              style={{
+                minWidth: "130px",
+                borderTop: "1px solid #1A1A1A",
+              }}
             >
               <span
-                className="text-[12px] font-medium text-white/30 group-hover:text-white/50 transition-colors duration-300 whitespace-nowrap"
+                className="text-[12px] font-light text-white/25 group-hover:text-white/45 transition-colors duration-300 whitespace-nowrap"
                 style={{ fontFamily: "var(--font-dm-sans)" }}
               >
                 {name}
