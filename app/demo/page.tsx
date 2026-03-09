@@ -79,7 +79,6 @@ export default function DemoPage() {
   const [showScrollHint, setShowScrollHint] = useState(false);
 
   /* ── Scroll fade ─────────────────────────────────────────── */
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -386,12 +385,12 @@ export default function DemoPage() {
     initTimeRef.current = Date.now();
     setPhase("running");
     setTextPhase("showing");
-    setTimeout(() => setTextPhase("faded"), 4200); // 0.6s fade-in + 3s display + buffer
+    setTimeout(() => setTextPhase("faded"), 4600); // 0.6s fade-in + 4s display
     setTimeout(() => setShowScrollHint(true), 14000);
   };
 
   return (
-    <main className="relative bg-[#06030F] text-white">
+    <main className="relative bg-[#08080D] text-white">
       {/* Fixed canvas */}
       <canvas
         ref={canvasRef}
@@ -399,20 +398,81 @@ export default function DemoPage() {
         style={{ transition: "opacity 0.3s" }}
       />
 
+      {/* ── Navigation ── */}
+      <nav
+        className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between"
+        style={{
+          height: 72,
+          padding: "0 48px",
+          background: "transparent",
+        }}
+      >
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2" style={{ textDecoration: "none" }}>
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: "#10B981",
+              display: "inline-block",
+              flexShrink: 0,
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 400,
+              fontSize: 15,
+              color: "#FFFFFF",
+              letterSpacing: "0.03em",
+            }}
+          >
+            Adopt AI
+          </span>
+        </Link>
+
+        {/* Book a Demo */}
+        <a
+          href="#"
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 400,
+            fontSize: 13,
+            color: "#888",
+            letterSpacing: "0.03em",
+            textDecoration: "none",
+            transition: "color 0.3s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#888")}
+        >
+          Book a Demo
+        </a>
+      </nav>
+
       {/* Viewport overlay */}
       <div className="relative z-10 flex h-screen flex-col items-center justify-center pointer-events-none select-none">
 
-        {/* LIVE SIMULATION label — always visible */}
+        {/* LIVE SIMULATION label */}
         <p
-          className="text-[10px] tracking-[0.4em] uppercase mb-10"
-          style={{ color: "rgba(0,212,170,0.5)", fontFamily: "var(--font-dm-sans)" }}
+          className="absolute"
+          style={{
+            top: 96,
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 400,
+            fontSize: 10,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "rgba(16, 185, 129, 0.5)",
+          }}
         >
           Live Simulation
         </p>
 
-        {/* One-shot headline + subtitle (fades in on init, fades out after 3s) */}
+        {/* One-shot headline + subtitle */}
         {textPhase !== "hidden" && (
-          <div className="text-center mb-10 absolute" style={{ top: "38%" }}>
+          <div className="text-center absolute" style={{ top: "38%" }}>
             <motion.h1
               initial={{ opacity: 0, filter: "blur(8px)", y: 8 }}
               animate={
@@ -421,16 +481,15 @@ export default function DemoPage() {
                   : { opacity: 0, filter: "blur(8px)", y: -8 }
               }
               transition={{ duration: textPhase === "showing" ? 0.6 : 0.8, ease: "easeOut" }}
+              className="text-4xl sm:text-5xl text-white text-center"
               style={{
                 fontFamily: "var(--font-dm-sans)",
-                fontWeight: 700,
-                fontSize: "clamp(26px, 4vw, 56px)",
-                lineHeight: 1.1,
-                color: "#ffffff",
-                letterSpacing: "-0.025em",
+                fontWeight: 300,
+                letterSpacing: "tight",
+                textShadow: "0 0 40px rgba(0,0,0,0.8)",
               }}
             >
-              See AI Integration in Action
+              See Integration in Action
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, filter: "blur(6px)", y: 6 }}
@@ -444,16 +503,15 @@ export default function DemoPage() {
                 delay: textPhase === "showing" ? 0.4 : 0,
                 ease: "easeOut",
               }}
-              className="mt-4 max-w-[480px] mx-auto"
+              className="text-base text-center mt-3"
               style={{
                 fontFamily: "var(--font-dm-sans)",
                 fontWeight: 300,
-                fontSize: "clamp(14px, 1.4vw, 17px)",
-                color: "rgba(255,255,255,0.5)",
-                lineHeight: 1.6,
+                color: "#777",
+                textShadow: "0 0 30px rgba(0,0,0,0.6)",
               }}
             >
-              Watch how Adopt AI connects hospital systems and AI tools into a unified intelligence layer.
+              Every system. Connected.
             </motion.p>
           </div>
         )}
@@ -468,14 +526,29 @@ export default function DemoPage() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               onClick={handleInit}
-              className="pointer-events-auto relative overflow-hidden rounded-full px-8 py-4 text-[14px] font-semibold text-[#0A0A0F] transition-all duration-300"
+              className="pointer-events-auto"
               style={{
-                background: "linear-gradient(135deg, #00D4AA 0%, #8B5CF6 100%)",
-                boxShadow: "0 0 30px rgba(0,212,170,0.35), 0 0 60px rgba(139,92,246,0.15)",
+                border: "1px solid #2A2A2A",
+                borderRadius: 999,
+                background: "transparent",
+                color: "#888",
+                fontSize: 12,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                fontWeight: 400,
+                padding: "10px 28px",
                 fontFamily: "var(--font-dm-sans)",
+                cursor: "pointer",
+                transition: "border-color 0.3s, color 0.3s",
               }}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#FFFFFF";
+                e.currentTarget.style.color = "#FFFFFF";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#2A2A2A";
+                e.currentTarget.style.color = "#888";
+              }}
             >
               Initialise Visualisation
             </motion.button>
@@ -493,15 +566,21 @@ export default function DemoPage() {
               className="absolute bottom-10 flex flex-col items-center gap-2"
             >
               <p
-                className="text-[11px] tracking-widest uppercase"
-                style={{ color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-dm-sans)" }}
+                style={{
+                  fontFamily: "var(--font-dm-sans)",
+                  fontWeight: 400,
+                  fontSize: 10,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "#444",
+                }}
               >
-                Scroll to learn more
+                Scroll Down
               </p>
               <motion.div
                 animate={{ y: [0, 6, 0] }}
                 transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-                style={{ color: "rgba(0,212,170,0.5)" }}
+                style={{ color: "#FFFFFF", opacity: 0.2 }}
               >
                 ↓
               </motion.div>
@@ -511,9 +590,10 @@ export default function DemoPage() {
       </div>
 
       {/* ── Below-fold ── */}
-      <div className="relative z-10 min-h-screen bg-gradient-to-b from-[#06030F] via-[#0A0618] to-[#0D0A1A] px-6 py-32">
-        <div className="mx-auto max-w-5xl">
+      <div className="relative z-10 min-h-screen bg-[#08080D] px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
+        <div className="mx-auto" style={{ maxWidth: 1200 }}>
 
+          {/* Section heading */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -521,46 +601,36 @@ export default function DemoPage() {
             transition={{ duration: 0.7 }}
             className="mb-20 text-center"
           >
-            <p
-              className="mb-4 text-[11px] tracking-[0.35em] uppercase"
-              style={{ color: "rgba(0,212,170,0.6)", fontFamily: "var(--font-dm-sans)" }}
-            >
-              What You Just Saw
-            </p>
             <h2
               style={{
                 fontFamily: "var(--font-dm-sans)",
-                fontWeight: 700,
-                fontSize: "clamp(28px, 4vw, 52px)",
-                lineHeight: 1.15,
-                color: "#ffffff",
-                letterSpacing: "-0.025em",
+                fontWeight: 400,
+                fontSize: 28,
+                color: "#FFFFFF",
+                letterSpacing: "-0.01em",
               }}
             >
-              Integration that adapts to you —<br />
-              <span style={{ color: "rgba(255,255,255,0.5)" }}>not the other way around.</span>
+              What You Just Saw
             </h2>
           </motion.div>
 
-          <div className="grid gap-6 sm:grid-cols-3">
+          {/* Feature cards */}
+          <div
+            className="grid sm:grid-cols-3"
+            style={{ gap: 60 }}
+          >
             {[
               {
-                icon: "⚡",
                 title: "Real-Time Data Flow",
                 body: "Watch live data move between HIS, EHR, billing, labs, and pharmacy systems simultaneously — no batch processing, no overnight jobs, no gaps in the record.",
-                color: { r: 0, g: 212, b: 170 },
               },
               {
-                icon: "🔌",
                 title: "Plug-In Any AI Tool",
                 body: "Radiology AI, clinical decision support, predictive analytics — connect any AI product to your hospital's existing infrastructure without custom builds or vendor lock-in.",
-                color: { r: 139, g: 92, b: 246 },
               },
               {
-                icon: "🔄",
                 title: "Self-Healing Networks",
                 body: "When systems update, APIs change, or new tools come online, the platform automatically adapts routing and maintains data flow without manual intervention.",
-                color: { r: 34, g: 211, b: 238 },
               },
             ].map((card, i) => (
               <motion.div
@@ -569,25 +639,30 @@ export default function DemoPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, delay: i * 0.12 }}
-                className="rounded-2xl p-8"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: `1px solid ${rgba(card.color.r, card.color.g, card.color.b, 0.15)}`,
+                  borderTop: "1px solid #1A1A1A",
+                  paddingTop: 28,
                 }}
               >
-                <div className="mb-5 text-3xl">{card.icon}</div>
                 <h3
-                  className="mb-3 text-[17px] font-bold"
                   style={{
                     fontFamily: "var(--font-dm-sans)",
-                    color: rgba(card.color.r, card.color.g, card.color.b, 0.95),
+                    fontWeight: 500,
+                    fontSize: 15,
+                    color: "#FFFFFF",
+                    marginBottom: 12,
                   }}
                 >
                   {card.title}
                 </h3>
                 <p
-                  className="text-[14px] leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-dm-sans)" }}
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: "#666",
+                    lineHeight: 1.7,
+                  }}
                 >
                   {card.body}
                 </p>
@@ -595,52 +670,74 @@ export default function DemoPage() {
             ))}
           </div>
 
+          {/* Bottom CTA */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-24 flex flex-col items-center gap-6 text-center"
+            className="flex flex-col items-center gap-6 text-center"
+            style={{ marginTop: 96 }}
           >
+            <h3
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 400,
+                fontSize: 24,
+                color: "#FFFFFF",
+              }}
+            >
+              Ready to connect your systems?
+            </h3>
             <p
               style={{
                 fontFamily: "var(--font-dm-sans)",
-                fontWeight: 600,
-                fontSize: "clamp(18px, 2.5vw, 28px)",
-                color: "rgba(255,255,255,0.8)",
-                letterSpacing: "-0.015em",
+                fontWeight: 300,
+                fontSize: 15,
+                color: "#666",
               }}
             >
-              Ready to connect your systems —<br />
-              <span style={{ color: "rgba(255,255,255,0.4)" }}>and the AI tools that will transform them?</span>
+              Every hospital is different. We&rsquo;ll map yours.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="#"
-                className="rounded-full px-7 py-3.5 text-[14px] font-bold text-[#0A0A0F] transition-all duration-300 hover:opacity-90"
-                style={{
-                  background: "#00D4AA",
-                  fontFamily: "var(--font-dm-sans)",
-                  boxShadow: "0 0 24px rgba(0,212,170,0.4)",
-                }}
-              >
-                Book a Demo
-              </a>
-              <Link
-                href="/"
-                className="rounded-full px-7 py-3.5 text-[14px] font-medium text-white transition-all duration-300"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  background: "rgba(255,255,255,0.04)",
-                  fontFamily: "var(--font-dm-sans)",
-                }}
-              >
-                ← Back to Home
-              </Link>
-            </div>
+            <a
+              href="#"
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 400,
+                fontSize: 15,
+                color: "#FFFFFF",
+                border: "1px solid #2A2A2A",
+                borderRadius: 999,
+                padding: "12px 32px",
+                textDecoration: "none",
+                transition: "opacity 0.3s",
+                display: "inline-block",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              Book a Demo
+            </a>
           </motion.div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer
+        className="relative z-10 text-center bg-[#08080D]"
+        style={{ paddingTop: 64, paddingBottom: 64 }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 400,
+            fontSize: 11,
+            color: "#444",
+          }}
+        >
+          &copy; 2025 Adopt AI
+        </p>
+      </footer>
     </main>
   );
 }
