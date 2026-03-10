@@ -88,7 +88,7 @@ export function Hero() {
             style={{
               fontFamily: "var(--font-playfair)",
               fontStyle: "italic",
-              fontWeight: 400,
+              fontWeight: 300,
               fontSize: "clamp(56px, 8vw, 96px)",
               lineHeight: 1.08,
               color: "rgba(255,255,255,0.72)",
@@ -136,12 +136,13 @@ export function Hero() {
         {/* Subheadline */}
         <p
           ref={subRef}
-          className="mt-7 max-w-[580px] leading-relaxed"
+          className="mt-7 max-w-[580px]"
           style={{
             fontFamily: "var(--font-dm-sans)",
             fontWeight: 300,
-            fontSize: "clamp(15px, 1.5vw, 18px)",
-            color: "#666",
+            fontSize: 16,
+            color: "#777",
+            lineHeight: 1.7,
           }}
         >
           AI-powered integration infrastructure for hospitals, clinics, and
@@ -152,43 +153,67 @@ export function Hero() {
         {/* CTAs */}
         <div
           ref={ctaRef}
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
+          className="mt-10 flex flex-wrap items-center justify-center"
+          style={{ gap: 32 }}
         >
-          {/* Primary CTA — ghost pill */}
+          {/* "Start Exploring →" — text link, arrow nudges right on hover */}
           <a
             href="#"
-            className="group flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-normal text-white transition-all duration-300"
+            className="group"
             style={{
               fontFamily: "var(--font-dm-sans)",
-              border: "1px solid #333",
-              background: "transparent",
+              fontWeight: 400,
+              fontSize: 15,
+              color: "#888",
+              letterSpacing: "0.02em",
+              textDecoration: "none",
+              transition: "color 0.3s",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "#ffffff";
+              const el = e.currentTarget as HTMLElement;
+              el.style.color = "#FFFFFF";
+              const arrow = el.querySelector<HTMLElement>(".cta-arrow");
+              if (arrow) arrow.style.transform = "translateX(4px)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "#333";
+              const el = e.currentTarget as HTMLElement;
+              el.style.color = "#888";
+              const arrow = el.querySelector<HTMLElement>(".cta-arrow");
+              if (arrow) arrow.style.transform = "translateX(0)";
             }}
           >
-            Start Exploring →
+            Start Exploring
+            <span
+              className="cta-arrow"
+              style={{ display: "inline-block", transition: "transform 0.3s" }}
+            >
+              →
+            </span>
           </a>
 
-          {/* Secondary CTA — filled green */}
+          {/* "View Live Demo" — white text link, primary action by colour */}
           <Link
             href="/demo"
-            className="group relative flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-medium text-black transition-all duration-300"
             style={{
               fontFamily: "var(--font-dm-sans)",
-              background: "#10B981",
+              fontWeight: 400,
+              fontSize: 15,
+              color: "#FFFFFF",
+              letterSpacing: "0.02em",
+              textDecoration: "none",
+              transition: "opacity 0.3s",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#0EA47A";
+              (e.currentTarget as HTMLElement).style.opacity = "0.7";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#10B981";
+              (e.currentTarget as HTMLElement).style.opacity = "1";
             }}
           >
-            View Live Demo →
+            View Live Demo
           </Link>
         </div>
       </div>
