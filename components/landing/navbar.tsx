@@ -1,6 +1,13 @@
 "use client";
 
-const NAV_LINKS = ["Platform", "Solutions", "About", "Contact"] as const;
+import Link from "next/link";
+
+const NAV_LINKS = [
+  { label: "Platform", href: "/platform" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "About", href: "#" },
+  { label: "Contact", href: "#" },
+] as const;
 
 export function Navbar() {
   return (
@@ -16,8 +23,8 @@ export function Navbar() {
       }}
     >
       {/* Logo */}
-      <a
-        href="#"
+      <Link
+        href="/"
         className="flex items-center gap-2"
         style={{ textDecoration: "none" }}
       >
@@ -42,14 +49,14 @@ export function Navbar() {
         >
           Adopt AI
         </span>
-      </a>
+      </Link>
 
       {/* Center nav links */}
       <div className="hidden md:flex items-center" style={{ gap: 48 }}>
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link}
-            href="#"
+        {NAV_LINKS.map(({ label, href }) => (
+          <Link
+            key={label}
+            href={href}
             style={{
               fontFamily: "var(--font-dm-sans)",
               fontWeight: 400,
@@ -62,8 +69,8 @@ export function Navbar() {
             onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "#888")}
           >
-            {link}
-          </a>
+            {label}
+          </Link>
         ))}
       </div>
 
