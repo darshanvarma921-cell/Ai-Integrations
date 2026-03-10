@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const PILLARS = [
@@ -10,30 +11,11 @@ const PILLARS = [
   },
   {
     title: "Normalise",
-    body: "Incoming data from every source is transformed into a single canonical model. Duplicate patients resolved, free-text coded to ICD-10, units standardised, quality issues flagged. The data lake stays clean without manual effort.",
+    body: "Incoming data from every source is transformed into a single canonical model. Duplicate patients resolved, free-text coded to ICD-10, units standardised, quality issues flagged automatically.",
   },
   {
-    title: "Orchestrate",
-    body: "Layer AI tools on top of clean, unified data. Plug in radiology AI, clinical decision support, predictive analytics — or build your own. The platform handles routing, permissions, and keeps everything running when systems change.",
-  },
-] as const;
-
-const LAYERS = [
-  {
-    label: "AI & Analytics Layer",
-    desc: "Natural language queries, clinical AI models, third-party AI tool integrations, executive dashboards",
-  },
-  {
-    label: "Intelligence Layer",
-    desc: "Auto-generated connectors, data normalisation, quality assurance, self-healing pipelines",
-  },
-  {
-    label: "Middleware",
-    desc: "FHIR R4 canonical schema, event-driven pipelines, message queues, API gateway",
-  },
-  {
-    label: "Hospital Systems",
-    desc: "EHRs, HIS, LIMS, pharmacy, PACS, devices, billing, insurance portals",
+    title: "Integrate",
+    body: "Bring in any AI tool — radiology triage, clinical decision support, documentation copilots, predictive analytics, revenue cycle automation. Connect it to clean, unified hospital data. No custom builds. No vendor lock-in.",
   },
 ] as const;
 
@@ -63,7 +45,7 @@ const fadeUp = {
 };
 
 /* ── Shared style helpers ─────────────────────────────────────── */
-const SECTION_BASE = { background: "#08080D" };
+const BG = "#08080D";
 const INNER = {
   maxWidth: 1200,
   marginLeft: "auto",
@@ -73,21 +55,12 @@ const INNER = {
 };
 const INNER_NARROW = { ...INNER, maxWidth: 640, paddingLeft: 24, paddingRight: 24 };
 
-const SECTION_HEADING = {
-  fontFamily: "var(--font-dm-sans)",
-  fontWeight: 400,
-  fontSize: 28,
-  color: "#FFFFFF",
-  letterSpacing: "-0.01em",
-  marginBottom: 48,
-};
-
 /* ── Component ────────────────────────────────────────────────── */
 export function BelowFold() {
   return (
     <>
       {/* ── A: The Problem ──────────────────────────────── */}
-      <section style={{ ...SECTION_BASE, borderTop: "1px solid #1A1A1A" }}>
+      <section style={{ background: BG, borderTop: "1px solid #1A1A1A" }}>
         <div style={{ ...INNER_NARROW, paddingTop: 96, paddingBottom: 96, textAlign: "center" }}>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -102,17 +75,18 @@ export function BelowFold() {
               lineHeight: 1.7,
             }}
           >
-            Hospital data lives in dozens of disconnected systems — EHRs, lab
-            software, billing platforms, bedside devices. Every integration is a
-            manual, months-long engineering project. Every system update breaks
-            something. And new AI tools can&rsquo;t plug in without rebuilding the
-            plumbing from scratch.
+            Hospitals don&rsquo;t have an AI problem. They have an integration
+            problem. Clinical data lives across dozens of disconnected systems —
+            EHRs, lab software, billing platforms, bedside devices. Every new AI
+            tool requires months of custom engineering to plug in. Every system
+            update breaks something. Most AI pilots die not because the technology
+            failed, but because the infrastructure wasn&rsquo;t ready.
           </motion.p>
         </div>
       </section>
 
       {/* ── B: What Adopt AI Does ─ three pillars ───────── */}
-      <section style={SECTION_BASE}>
+      <section style={{ background: BG }}>
         <div style={{ ...INNER, paddingBottom: 96 }}>
           <div className="grid sm:grid-cols-3" style={{ gap: 60 }}>
             {PILLARS.map((p, i) => (
@@ -153,77 +127,103 @@ export function BelowFold() {
         </div>
       </section>
 
-      {/* ── C: How It Works ─ architecture layers ───────── */}
-      <section style={SECTION_BASE}>
+      {/* ── C: Start With Readiness ─ featured block ────── */}
+      <section style={{ background: BG }}>
         <div style={{ ...INNER, paddingBottom: 96 }}>
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            style={SECTION_HEADING}
+            style={{
+              border: "1px solid #1A1A1A",
+              padding: 40,
+              maxWidth: 720,
+            }}
           >
-            How It Works
-          </motion.h2>
-
-          <div>
-            {LAYERS.map((layer, i) => (
-              <motion.div
-                key={layer.label}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                variants={fadeUp}
-                className="flex items-start justify-between"
-                style={{
-                  borderTop: "1px solid #1A1A1A",
-                  paddingTop: 20,
-                  paddingBottom: 20,
-                  gap: 48,
-                }}
+            <p
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 400,
+                fontSize: 16,
+                color: "#FFFFFF",
+                marginBottom: 16,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Before you integrate, know where you stand.
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 300,
+                fontSize: 14,
+                color: "#666",
+                lineHeight: 1.7,
+                marginBottom: 28,
+                maxWidth: 580,
+              }}
+            >
+              Our AI Readiness Assessment maps your hospital&rsquo;s systems, data
+              quality, governance, workflows, infrastructure, and team capacity
+              across six domains. You get a scored report, gap analysis, risk
+              heatmap, and a prioritised roadmap — not a generic checklist, but a
+              hospital-specific blueprint for AI adoption.
+            </p>
+            <Link
+              href="/readiness"
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 400,
+                fontSize: 14,
+                color: "#888",
+                textDecoration: "none",
+                transition: "color 0.3s",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.color = "#FFFFFF";
+                const arrow = el.querySelector<HTMLElement>(".rf-arrow");
+                if (arrow) arrow.style.transform = "translateX(4px)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.color = "#888";
+                const arrow = el.querySelector<HTMLElement>(".rf-arrow");
+                if (arrow) arrow.style.transform = "translateX(0)";
+              }}
+            >
+              Learn more
+              <span
+                className="rf-arrow"
+                style={{ display: "inline-block", transition: "transform 0.3s" }}
               >
-                <span
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 500,
-                    fontSize: 13,
-                    color: "#FFFFFF",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    minWidth: 200,
-                    flexShrink: 0,
-                  }}
-                >
-                  {layer.label}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 300,
-                    fontSize: 14,
-                    color: "#666",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {layer.desc}
-                </span>
-              </motion.div>
-            ))}
-            <div style={{ borderTop: "1px solid #1A1A1A" }} />
-          </div>
+                →
+              </span>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
       {/* ── D: Built For ─ system grid ──────────────────── */}
-      <section style={SECTION_BASE}>
+      <section style={{ background: BG }}>
         <div style={{ ...INNER, paddingBottom: 96, textAlign: "center" }}>
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            style={SECTION_HEADING}
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 400,
+              fontSize: 28,
+              color: "#FFFFFF",
+              letterSpacing: "-0.01em",
+              marginBottom: 48,
+            }}
           >
             Built For
           </motion.h2>
@@ -242,10 +242,7 @@ export function BelowFold() {
                   paddingBottom: 20,
                 }}
               >
-                <div
-                  className="flex flex-wrap justify-center"
-                  style={{ gap: 24 }}
-                >
+                <div className="flex flex-wrap justify-center" style={{ gap: 24 }}>
                   {row.items.map((item) => (
                     <span
                       key={item}
@@ -270,7 +267,7 @@ export function BelowFold() {
       </section>
 
       {/* ── E: CTA ──────────────────────────────────────── */}
-      <section style={SECTION_BASE}>
+      <section style={{ background: BG }}>
         <div
           style={{
             ...INNER_NARROW,
@@ -296,8 +293,7 @@ export function BelowFold() {
                 lineHeight: 1.7,
               }}
             >
-              Ready to connect your systems — and the AI tools that will transform
-              them?
+              Ready to find out if your hospital is ready for AI?
             </p>
             <a
               href="#"
@@ -321,7 +317,7 @@ export function BelowFold() {
       {/* ── Footer ──────────────────────────────────────── */}
       <footer
         style={{
-          background: "#08080D",
+          background: BG,
           borderTop: "1px solid #1A1A1A",
           paddingTop: 64,
           paddingBottom: 64,

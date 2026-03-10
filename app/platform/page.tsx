@@ -4,97 +4,68 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/components/landing/navbar";
 
 /* ── Data ─────────────────────────────────────────────────────── */
-const CAPABILITIES = [
-  {
-    title: "Intelligent Auto-Integration",
-    body: "Upload a PDF, CSV, or API spec. The platform reads the document, infers the data schema, maps fields to our canonical FHIR model, and generates a working connector adapter. What used to take weeks of custom engineering collapses to hours.",
-  },
-  {
-    title: "AI-Powered Data Normalisation",
-    body: "Entity resolution resolves duplicate patients across systems. NLP extracts structured data from free-text clinical notes and maps to ICD-10. Unit conversion, drug name standardisation, and confidence scoring ensure the data lake stays clean.",
-  },
-  {
-    title: "Self-Healing Pipelines",
-    body: "When a hospital updates their EHR config, changes a password, or alters a data format — the platform detects the break, diagnoses the root cause, and auto-recovers. Only novel failures escalate to engineers.",
-  },
-  {
-    title: "Natural Language Data Queries",
-    body: "Hospital staff type plain-language questions and get instant answers from the unified data lake. No SQL, no BI dashboards. Role-based access ensures department heads only see their own data.",
-  },
-  {
-    title: "Connector Marketplace",
-    body: "Every deployed connector is stored as a versioned template. When a new hospital comes onboard with a similar system, the platform recommends the closest existing connector and auto-customises it. Each integration makes the next one faster.",
-  },
-] as const;
-
 const LAYERS = [
   {
-    label: "AI & Analytics Layer",
-    desc: "Natural language queries for hospital staff. Clinical AI model routing — radiology, pathology, risk scoring. Third-party AI tool integrations with permissions management. Executive dashboards and regulatory reporting.",
+    label: "AI Tools",
+    desc: "Any third-party AI product: radiology triage, clinical decision support, documentation copilots, predictive analytics, revenue cycle automation. You choose. We connect.",
   },
   {
     label: "Intelligence Layer",
-    desc: "Auto-generated connector adapters from spec documents. AI-powered entity resolution and data normalisation. Confidence scoring and quality assurance pipelines. Self-healing detection, root cause diagnosis, and auto-recovery.",
+    desc: "Auto-generated connectors from uploaded specs, data normalisation engine, quality assurance, self-healing pipeline monitoring.",
   },
   {
     label: "Middleware",
-    desc: "FHIR R4 canonical data model as single source of truth. Event-driven pipelines with message queues. API gateway with role-based access control. Audit trails and compliance logging.",
+    desc: "FHIR R4 canonical data model, event-driven pipelines, API gateway, message queues. All hospital data transformed into one queryable schema.",
   },
   {
     label: "Hospital Systems",
-    desc: "EHR and HIS platforms. LIMS and pharmacy management. PACS and radiology systems. Bedside devices and medical equipment. Billing, insurance portals, and accounting/ERP.",
+    desc: "EHRs, HIS, LIMS, pharmacy, PACS, bedside devices, billing, insurance portals. Connected through pre-built adapters or auto-generated from documentation.",
+  },
+] as const;
+
+const CAPABILITIES = [
+  {
+    title: "Intelligent Auto-Integration",
+    body: "Upload an API spec, a CSV template, or a device data sheet. The platform reads it, infers the schema, maps fields to our canonical model, and generates a working connector. What used to take weeks collapses to hours.",
+  },
+  {
+    title: "Data Normalisation",
+    body: "Entity resolution across systems. NLP extraction from free-text to ICD-10. Unit conversion, drug name standardisation, duplicate detection. The data lake stays clean without manual effort.",
+  },
+  {
+    title: "Self-Healing Pipelines",
+    body: "When a hospital changes an EHR config, updates an API, or alters a data format — the platform detects the break, diagnoses the cause, and auto-recovers. Only novel failures reach an engineer.",
+  },
+  {
+    title: "Natural Language Queries",
+    body: "Hospital staff ask questions in plain language and get answers from the unified data lake. No SQL. No BI tools. Role-based access ensures people only see what they should.",
+  },
+  {
+    title: "Connector Marketplace",
+    body: "Every deployed integration is stored as a versioned template. When a new hospital runs a similar system, the platform recommends the closest match and auto-customises. Each connection makes the next one faster.",
   },
 ] as const;
 
 const SYSTEM_CATEGORIES = [
   {
     label: "EHR / HIS",
-    items: [
-      { name: "DoctorsApp", note: "cloud-native HIS" },
-      { name: "Practo Ray", note: "clinic management" },
-      { name: "HealthPlix", note: "EMR platform" },
-      { name: "KareXpert", note: "hospital management" },
-      { name: "Insta HMS", note: "hospital management" },
-      { name: "Eka Care", note: "health records" },
-      { name: "MocDoc", note: "hospital management" },
-      { name: "Bahmni", note: "open-source EMR" },
-    ],
+    items: "DoctorsApp, Practo Ray, HealthPlix, KareXpert, Insta, Eka Care, MocDoc, CrelioHealth, MediXcel, NuvertOS, LIFE HIS, Bahmni, eHospital (NIC)",
   },
   {
     label: "Medical Devices",
-    items: [
-      { name: "Patient Monitors", note: "Philips, GE, Mindray, Drager" },
-      { name: "Ventilators", note: "Hamilton, Drager, Mindray" },
-      { name: "Infusion Pumps", note: "BD, Baxter, B. Braun" },
-      { name: "Lab Analysers", note: "Roche, Siemens, Abbott" },
-      { name: "Imaging Systems", note: "GE, Philips, Siemens Healthineers" },
-      { name: "ECG / Cardiac", note: "Schiller, BPL, GE" },
-    ],
+    items: "Patient monitors (Philips, GE, BPL, Mindray), Ventilators (Hamilton, Drager, AgVa), Infusion pumps (B. Braun, Fresenius), Lab analysers (Roche, Siemens, Beckman, Erba), Imaging (GE, Siemens, Fujifilm, Allengers), ECG (BPL, Schiller, Philips, Tricog)",
   },
   {
-    label: "Integration Protocols",
-    items: [
-      { name: "HL7 FHIR R4", note: "primary canonical standard" },
-      { name: "HL7 v2", note: "legacy messaging" },
-      { name: "DICOM", note: "imaging and radiology" },
-      { name: "ASTM", note: "laboratory instruments" },
-      { name: "ABDM HIE-CM", note: "India national health exchange" },
-      { name: "IEEE 11073", note: "bedside device communication" },
-      { name: "SCP-ECG", note: "ECG data transfer" },
-    ],
+    label: "Protocols",
+    items: "HL7 FHIR R4, HL7 v2, DICOM, DICOMweb, ASTM, ABDM HIE-CM, IEEE 11073, SCP-ECG",
   },
   {
     label: "Ancillary Systems",
-    items: [
-      { name: "LIMS", note: "laboratory information management" },
-      { name: "Pharmacy Management", note: "dispensing and inventory" },
-      { name: "Insurance / TPA Portals", note: "claims and pre-authorisation" },
-      { name: "Accounting / ERP", note: "finance and procurement" },
-    ],
+    items: "LIMS, pharmacy management, ABDM/ABHA, TPA portals (Medi Assist, Paramount, Raksha), CGHS, Ayushman Bharat PMJAY, Tally, SAP",
   },
 ] as const;
 
-/* ── Shared helpers ───────────────────────────────────────────── */
+/* ── Animation ────────────────────────────────────────────────── */
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
@@ -104,7 +75,77 @@ const fadeUp = {
   }),
 };
 
+/* ── Shared layout ────────────────────────────────────────────── */
 const BG = "#08080D";
+const INNER = {
+  maxWidth: 1200,
+  marginLeft: "auto",
+  marginRight: "auto",
+  paddingLeft: 48,
+  paddingRight: 48,
+};
+const H2 = {
+  fontFamily: "var(--font-dm-sans)",
+  fontWeight: 400,
+  fontSize: 28,
+  color: "#FFFFFF",
+  letterSpacing: "-0.01em",
+  marginBottom: 48,
+};
+
+/* ── CTA block (reused) ───────────────────────────────────────── */
+function PageCTA() {
+  return (
+    <section style={{ background: BG }}>
+      <div
+        style={{
+          maxWidth: 640,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: 24,
+          paddingRight: 24,
+          paddingBottom: 96,
+          textAlign: "center",
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7 }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32 }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 300,
+              fontSize: 18,
+              color: "#777",
+              lineHeight: 1.7,
+            }}
+          >
+            Ready to find out if your hospital is ready for AI?
+          </p>
+          <a
+            href="#"
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 400,
+              fontSize: 15,
+              color: "#FFFFFF",
+              textDecoration: "none",
+              transition: "opacity 0.3s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            Book a Demo
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 /* ── Page ─────────────────────────────────────────────────────── */
 export default function PlatformPage() {
@@ -113,17 +154,7 @@ export default function PlatformPage() {
       <Navbar />
 
       {/* ── Hero ────────────────────────────────────────── */}
-      <section
-        style={{
-          paddingTop: 152,
-          paddingBottom: 96,
-          paddingLeft: 48,
-          paddingRight: 48,
-          maxWidth: 1200,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
+      <section style={{ ...INNER, paddingTop: 152, paddingBottom: 96 }}>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -150,310 +181,198 @@ export default function PlatformPage() {
             fontSize: 17,
             color: "#777",
             lineHeight: 1.7,
-            maxWidth: 560,
+            maxWidth: 600,
           }}
         >
-          A connector-first platform that brings fragmented hospital data
-          together, then layers intelligence on top.
+          We don&rsquo;t sell AI products. We make it possible for hospitals to
+          adopt any AI product — seamlessly, without disruption, without replacing
+          what already works.
         </motion.p>
       </section>
 
-      {/* ── Section 1: Five Core Capabilities ───────────── */}
-      <section
-        style={{
-          borderTop: "1px solid #1A1A1A",
-          paddingBottom: 96,
-          paddingLeft: 48,
-          paddingRight: 48,
-          maxWidth: 1200,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7 }}
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 400,
-            fontSize: 28,
-            color: "#FFFFFF",
-            letterSpacing: "-0.01em",
-            paddingTop: 48,
-            marginBottom: 48,
-          }}
-        >
-          Five Core Capabilities
-        </motion.h2>
+      {/* ── Section 1: How It Works ─ platform layers ───── */}
+      <section style={{ borderTop: "1px solid #1A1A1A", background: BG }}>
+        <div style={{ ...INNER, paddingTop: 64, paddingBottom: 96 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7 }}
+            style={H2}
+          >
+            How It Works
+          </motion.h2>
 
-        <div>
-          {CAPABILITIES.map((cap, i) => (
-            <motion.div
-              key={cap.title}
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              variants={fadeUp}
-              style={{
-                borderTop: "1px solid #1A1A1A",
-                paddingTop: 28,
-                paddingBottom: 28,
-                display: "grid",
-                gridTemplateColumns: "240px 1fr",
-                gap: 48,
-              }}
-            >
-              <h3
+          <div>
+            {LAYERS.map((layer, i) => (
+              <motion.div
+                key={layer.label}
+                custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                variants={fadeUp}
                 style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontWeight: 500,
-                  fontSize: 15,
-                  color: "#FFFFFF",
+                  borderTop: "1px solid #1A1A1A",
+                  paddingTop: 20,
+                  paddingBottom: 20,
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 48,
                 }}
               >
-                {cap.title}
-              </h3>
-              <p
-                style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontWeight: 300,
-                  fontSize: 14,
-                  color: "#666",
-                  lineHeight: 1.7,
-                }}
-              >
-                {cap.body}
-              </p>
-            </motion.div>
-          ))}
-          <div style={{ borderTop: "1px solid #1A1A1A" }} />
+                <span
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 500,
+                    fontSize: 13,
+                    color: "#FFFFFF",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    minWidth: 200,
+                    flexShrink: 0,
+                  }}
+                >
+                  {layer.label}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: "#666",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {layer.desc}
+                </span>
+              </motion.div>
+            ))}
+            <div style={{ borderTop: "1px solid #1A1A1A" }} />
+          </div>
         </div>
       </section>
 
-      {/* ── Section 2: Architecture ──────────────────────── */}
-      <section
-        style={{
-          paddingTop: 96,
-          paddingBottom: 96,
-          paddingLeft: 48,
-          paddingRight: 48,
-          maxWidth: 1200,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7 }}
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 400,
-            fontSize: 28,
-            color: "#FFFFFF",
-            letterSpacing: "-0.01em",
-            marginBottom: 48,
-          }}
-        >
-          Architecture
-        </motion.h2>
+      {/* ── Section 2: Five Core Capabilities ───────────── */}
+      <section style={{ background: BG }}>
+        <div style={{ ...INNER, paddingTop: 96, paddingBottom: 96 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7 }}
+            style={H2}
+          >
+            Five Core Capabilities
+          </motion.h2>
 
-        <div>
-          {LAYERS.map((layer, i) => (
-            <motion.div
-              key={layer.label}
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              variants={fadeUp}
-              style={{
-                borderTop: "1px solid #1A1A1A",
-                paddingTop: 20,
-                paddingBottom: 20,
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 48,
-              }}
-            >
-              <span
+          <div>
+            {CAPABILITIES.map((cap, i) => (
+              <motion.div
+                key={cap.title}
+                custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                variants={fadeUp}
                 style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontWeight: 500,
-                  fontSize: 13,
-                  color: "#FFFFFF",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  minWidth: 200,
-                  flexShrink: 0,
+                  borderTop: "1px solid #1A1A1A",
+                  paddingTop: 28,
+                  paddingBottom: 28,
+                  display: "grid",
+                  gridTemplateColumns: "240px 1fr",
+                  gap: 48,
                 }}
               >
-                {layer.label}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontWeight: 300,
-                  fontSize: 14,
-                  color: "#666",
-                  lineHeight: 1.7,
-                }}
-              >
-                {layer.desc}
-              </span>
-            </motion.div>
-          ))}
-          <div style={{ borderTop: "1px solid #1A1A1A" }} />
+                <h3
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 500,
+                    fontSize: 15,
+                    color: "#FFFFFF",
+                  }}
+                >
+                  {cap.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: "#666",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {cap.body}
+                </p>
+              </motion.div>
+            ))}
+            <div style={{ borderTop: "1px solid #1A1A1A" }} />
+          </div>
         </div>
       </section>
 
       {/* ── Section 3: Supported Systems ─────────────────── */}
-      <section
-        style={{
-          paddingTop: 96,
-          paddingBottom: 96,
-          paddingLeft: 48,
-          paddingRight: 48,
-          maxWidth: 1200,
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7 }}
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 400,
-            fontSize: 28,
-            color: "#FFFFFF",
-            letterSpacing: "-0.01em",
-            marginBottom: 48,
-          }}
-        >
-          Supported Systems
-        </motion.h2>
+      <section style={{ background: BG }}>
+        <div style={{ ...INNER, paddingTop: 96, paddingBottom: 96 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7 }}
+            style={H2}
+          >
+            Supported Systems
+          </motion.h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
-          {SYSTEM_CATEGORIES.map((cat, ci) => (
-            <motion.div
-              key={cat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: ci * 0.08 }}
-            >
-              <p
+          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+            {SYSTEM_CATEGORIES.map((cat, i) => (
+              <motion.div
+                key={cat.label}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: i * 0.08 }}
                 style={{
-                  fontFamily: "var(--font-dm-sans)",
-                  fontWeight: 500,
-                  fontSize: 11,
-                  color: "#555",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  marginBottom: 16,
+                  borderTop: "1px solid #1A1A1A",
+                  paddingTop: 24,
+                  display: "grid",
+                  gridTemplateColumns: "180px 1fr",
+                  gap: 32,
+                  alignItems: "baseline",
                 }}
               >
-                {cat.label}
-              </p>
-              <div>
-                {cat.items.map((item, ii) => (
-                  <div
-                    key={item.name}
-                    style={{
-                      borderTop: ii === 0 ? "1px solid #1A1A1A" : "1px solid #141414",
-                      paddingTop: 14,
-                      paddingBottom: 14,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 24,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-dm-sans)",
-                        fontWeight: 400,
-                        fontSize: 14,
-                        color: "#CCCCCC",
-                      }}
-                    >
-                      {item.name}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-dm-sans)",
-                        fontWeight: 300,
-                        fontSize: 13,
-                        color: "#555",
-                      }}
-                    >
-                      {item.note}
-                    </span>
-                  </div>
-                ))}
-                <div style={{ borderTop: "1px solid #1A1A1A" }} />
-              </div>
-            </motion.div>
-          ))}
+                <span
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 500,
+                    fontSize: 11,
+                    color: "#555",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {cat.label}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-dm-sans)",
+                    fontWeight: 300,
+                    fontSize: 14,
+                    color: "#555",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {cat.items}
+                </span>
+              </motion.div>
+            ))}
+            <div style={{ borderTop: "1px solid #1A1A1A" }} />
+          </div>
         </div>
       </section>
 
-      {/* ── CTA ─────────────────────────────────────────── */}
-      <section
-        style={{
-          paddingTop: 0,
-          paddingBottom: 96,
-          paddingLeft: 24,
-          paddingRight: 24,
-          maxWidth: 640,
-          marginLeft: "auto",
-          marginRight: "auto",
-          textAlign: "center",
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7 }}
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32 }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-dm-sans)",
-              fontWeight: 300,
-              fontSize: 18,
-              color: "#777",
-              lineHeight: 1.7,
-            }}
-          >
-            Ready to connect your systems — and the AI tools that will transform
-            them?
-          </p>
-          <a
-            href="#"
-            style={{
-              fontFamily: "var(--font-dm-sans)",
-              fontWeight: 400,
-              fontSize: 15,
-              color: "#FFFFFF",
-              textDecoration: "none",
-              transition: "opacity 0.3s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            Book a Demo
-          </a>
-        </motion.div>
-      </section>
+      <PageCTA />
 
       {/* ── Footer ──────────────────────────────────────── */}
       <footer
