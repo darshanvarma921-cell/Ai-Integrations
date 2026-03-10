@@ -3,7 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-/* ── Data ─────────────────────────────────────────────────────── */
+/* ── Marquee data ─────────────────────────────────────────────── */
+const ROW_1 = ["DoctorsApp", "Practo Ray", "HealthPlix", "KareXpert", "Insta", "Eka Care", "MocDoc", "Bahmni"];
+const ROW_2 = ["Philips", "GE", "Mindray", "Drager", "Roche", "Siemens", "BPL", "Schiller"];
+const ROW_3 = ["HL7 FHIR R4", "HL7 v2", "DICOM", "ASTM", "ABDM", "IEEE 11073"];
+
+/* ── Pillar data ──────────────────────────────────────────────── */
 const PILLARS = [
   {
     title: "Connect",
@@ -19,22 +24,58 @@ const PILLARS = [
   },
 ] as const;
 
-const SYSTEM_ROWS = [
-  {
-    category: "EHR / HIS",
-    items: ["DoctorsApp", "Practo Ray", "HealthPlix", "KareXpert", "Insta", "Eka Care", "MocDoc", "Bahmni"],
-  },
-  {
-    category: "Devices",
-    items: ["Philips", "GE", "Mindray", "Drager", "Roche", "Siemens", "BPL", "Schiller"],
-  },
-  {
-    category: "Protocols",
-    items: ["HL7 FHIR R4", "HL7 v2", "DICOM", "ASTM", "ABDM", "IEEE 11073"],
-  },
-] as const;
+/* ── MarqueeRow ───────────────────────────────────────────────── */
+const ITEM_STYLE: React.CSSProperties = {
+  fontFamily: "var(--font-dm-sans)",
+  fontWeight: 400,
+  fontSize: 11,
+  color: "#555",
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+  whiteSpace: "nowrap",
+  paddingRight: 56,
+  userSelect: "none",
+};
 
-/* ── Shared animation variant ─────────────────────────────────── */
+const MASK: React.CSSProperties = {
+  WebkitMaskImage:
+    "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+  maskImage:
+    "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+  overflow: "hidden",
+};
+
+function MarqueeRow({
+  items,
+  direction,
+  duration,
+}: {
+  items: readonly string[];
+  direction: "left" | "right";
+  duration: number;
+}) {
+  const doubled = [...items, ...items];
+  return (
+    <div style={MASK}>
+      <div
+        className={`animate-marquee-${direction}`}
+        style={{
+          display: "flex",
+          animationDuration: `${duration}s`,
+          willChange: "transform",
+        }}
+      >
+        {doubled.map((item, i) => (
+          <span key={i} style={ITEM_STYLE}>
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Shared animation ─────────────────────────────────────────── */
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
@@ -46,14 +87,19 @@ const fadeUp = {
 
 /* ── Shared style helpers ─────────────────────────────────────── */
 const BG = "#08080D";
-const INNER = {
+const INNER: React.CSSProperties = {
   maxWidth: 1200,
   marginLeft: "auto",
   marginRight: "auto",
   paddingLeft: 48,
   paddingRight: 48,
 };
-const INNER_NARROW = { ...INNER, maxWidth: 640, paddingLeft: 24, paddingRight: 24 };
+const INNER_NARROW: React.CSSProperties = {
+  ...INNER,
+  maxWidth: 640,
+  paddingLeft: 24,
+  paddingRight: 24,
+};
 
 /* ── Component ────────────────────────────────────────────────── */
 export function BelowFold() {
@@ -61,7 +107,14 @@ export function BelowFold() {
     <>
       {/* ── A: The Problem ──────────────────────────────── */}
       <section style={{ background: BG, borderTop: "1px solid #1A1A1A" }}>
-        <div style={{ ...INNER_NARROW, paddingTop: 96, paddingBottom: 96, textAlign: "center" }}>
+        <div
+          style={{
+            ...INNER_NARROW,
+            paddingTop: 96,
+            paddingBottom: 96,
+            textAlign: "center",
+          }}
+        >
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -208,60 +261,34 @@ export function BelowFold() {
         </div>
       </section>
 
-      {/* ── D: Built For ─ system grid ──────────────────── */}
-      <section style={{ background: BG }}>
-        <div style={{ ...INNER, paddingBottom: 96, textAlign: "center" }}>
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
+      {/* ── D: Compatible with ─ marquee ─────────────────── */}
+      <section style={{ background: BG, borderTop: "1px solid #1A1A1A" }}>
+        <div style={{ paddingTop: 64, paddingBottom: 72 }}>
+          {/* Label */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.7 }}
             style={{
               fontFamily: "var(--font-dm-sans)",
               fontWeight: 400,
-              fontSize: 28,
-              color: "#FFFFFF",
-              letterSpacing: "-0.01em",
-              marginBottom: 48,
+              fontSize: 10,
+              color: "#444",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              textAlign: "center",
+              marginBottom: 40,
             }}
           >
-            Built For
-          </motion.h2>
+            Compatible with
+          </motion.p>
 
-          <div>
-            {SYSTEM_ROWS.map((row, i) => (
-              <motion.div
-                key={row.category}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                style={{
-                  borderTop: "1px solid #1A1A1A",
-                  paddingTop: 20,
-                  paddingBottom: 20,
-                }}
-              >
-                <div className="flex flex-wrap justify-center" style={{ gap: 24 }}>
-                  {row.items.map((item) => (
-                    <span
-                      key={item}
-                      style={{
-                        fontFamily: "var(--font-dm-sans)",
-                        fontWeight: 400,
-                        fontSize: 11,
-                        color: "#555",
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-            <div style={{ borderTop: "1px solid #1A1A1A" }} />
+          {/* Rows */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            <MarqueeRow items={ROW_1} direction="left" duration={30} />
+            <MarqueeRow items={ROW_2} direction="right" duration={40} />
+            <MarqueeRow items={ROW_3} direction="left" duration={35} />
           </div>
         </div>
       </section>
@@ -271,7 +298,7 @@ export function BelowFold() {
         <div
           style={{
             ...INNER_NARROW,
-            paddingTop: 0,
+            paddingTop: 96,
             paddingBottom: 96,
             textAlign: "center",
           }}

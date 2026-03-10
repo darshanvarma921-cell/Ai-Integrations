@@ -108,6 +108,26 @@ body {
   animation: radial-breathe 4s ease-in-out infinite;
 }
 
+/* ─── Marquee ───────────────────────────────────────────── */
+
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right linear infinite;
+}
+
 /* ─── Scrollbar ─────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 5px; }
 ::-webkit-scrollbar-track  { background: #0A0A0F; }
