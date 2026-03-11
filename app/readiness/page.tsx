@@ -85,6 +85,40 @@ const STEPS = [
   },
 ] as const;
 
+/* ── Solution data (for "What Happens Next") ─────────────────── */
+const SOLUTIONS = [
+  {
+    diagnosticLabel: "Interoperability Test",
+    title: "Core Integration Middleware",
+    description:
+      "A centralised API and routing layer between legacy hospital systems and new AI applications. When the assessment reveals that EHRs are blocking third-party tools from pulling real-time data or writing back into the system, this acts as the universal translator — unlocking read/write access so AI tools work without latency.",
+  },
+  {
+    diagnosticLabel: "Data Health Profiler",
+    title: "Data Standardisation & ETL Pipeline",
+    description:
+      "A data cleansing and pipeline service that resolves exactly the issues the profiler flags — missing fields, duplicates, unstructured free-text. If a hospital plugs AI into uncleaned data, it hallucinates. This solution structures and normalises their data before any AI deployment.",
+  },
+  {
+    diagnosticLabel: "Workflow Intelligence Analyzer",
+    title: "Workflow Orchestration Platform",
+    description:
+      "A UI and workflow integration engine that embeds AI output directly into the EHR screens clinicians already use. When the assessment shows doctors switching through 15 screens per session, a standalone AI app will be ignored. This takes the AI\u2019s recommendations and places them where they\u2019ll actually be seen and acted on.",
+  },
+  {
+    diagnosticLabel: "Governance Gap Mapper",
+    title: "Compliance & Audit Logging Engine",
+    description:
+      "A secure governance and tracking layer for AI models. When Legal and the CISO block deployment because they can\u2019t track data privacy or clinical liability, this automatically logs patient consent, data provenance, and every time a clinician accepts or overrides an AI recommendation.",
+  },
+  {
+    diagnosticLabel: "Opportunity Prioritizer",
+    title: "Managed AI Deployment",
+    description:
+      "End-to-end deployment of specific, vetted AI applications — ambient scribes, patient flow predictors, clinical communication tools. Once the assessment identifies the exact use case a hospital is ready for, we act as their deployment team to safely roll that tool into production. No in-house data scientists required.",
+  },
+] as const;
+
 /* ── Flip card data ───────────────────────────────────────────── */
 const CARDS = [
   {
@@ -247,6 +281,94 @@ function BentoCell({
       >
         {body}
       </p>
+    </motion.div>
+  );
+}
+
+/* ── SolutionBlock ────────────────────────────────────────────── */
+function SolutionBlock({
+  solution,
+  isLast,
+  index,
+}: {
+  solution: (typeof SOLUTIONS)[number];
+  isLast: boolean;
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, delay: index * 0.06 }}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: 0,
+        paddingTop: 48,
+        paddingBottom: isLast ? 0 : 48,
+        borderBottom: isLast ? "none" : "1px solid #1A1A1A",
+      }}
+      className="solution-block"
+    >
+      {/* Left: diagnostic link (~30%) */}
+      <div style={{ width: "30%", flexShrink: 0, paddingRight: 32, paddingTop: 2 }}>
+        <p
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 400,
+            fontSize: 10,
+            color: "#555",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            marginBottom: 6,
+          }}
+        >
+          When hospitals fail:
+        </p>
+        <p
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 400,
+            fontSize: 13,
+            color: "#888",
+          }}
+        >
+          {solution.diagnosticLabel}
+        </p>
+      </div>
+
+      {/* Right: solution detail (~70%) */}
+      <div
+        style={{
+          flex: 1,
+          borderLeft: "1px solid #1A1A1A",
+          paddingLeft: 32,
+        }}
+      >
+        <h3
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 500,
+            fontSize: 16,
+            color: "#FFFFFF",
+            marginBottom: 8,
+          }}
+        >
+          {solution.title}
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--font-dm-sans)",
+            fontWeight: 300,
+            fontSize: 14,
+            color: "#666",
+            lineHeight: 1.7,
+          }}
+        >
+          {solution.description}
+        </p>
+      </div>
     </motion.div>
   );
 }
@@ -514,7 +636,49 @@ export default function ReadinessPage() {
         </div>
       </section>
 
-      {/* ── Section 4: Not a Checklist ────────────────────── */}
+      {/* ── Section 4: What Happens Next ─────────────────── */}
+      <section style={{ background: BG }}>
+        <div style={{ ...INNER, paddingTop: 96, paddingBottom: 96 }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7 }}
+            style={{ ...H2, borderTop: "1px solid #1A1A1A", paddingTop: 48, marginBottom: 8 }}
+          >
+            What Happens Next
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 300,
+              fontSize: 14,
+              color: "#666",
+              marginBottom: 48,
+            }}
+          >
+            The assessment tells you where you stand. These are the solutions that close the gaps.
+          </motion.p>
+
+          <div>
+            {SOLUTIONS.map((solution, i) => (
+              <SolutionBlock
+                key={solution.title}
+                solution={solution}
+                isLast={i === SOLUTIONS.length - 1}
+                index={i}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Section 5: Not a Checklist ────────────────────── */}
       <section style={{ background: BG }}>
         <div
           style={{
@@ -548,7 +712,7 @@ export default function ReadinessPage() {
         </div>
       </section>
 
-      {/* ── Section 5: CTA ───────────────────────────────── */}
+      {/* ── Section 6: CTA ───────────────────────────────── */}
       <section style={{ background: BG }}>
         <div
           style={{
