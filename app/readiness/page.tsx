@@ -3,6 +3,13 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Navbar } from "@/components/landing/navbar";
+import {
+  Network,
+  DatabaseZap,
+  GitBranch,
+  ShieldCheck,
+  Rocket,
+} from "lucide-react";
 
 /* ── Shared layout ────────────────────────────────────────────── */
 const BG = "#08080D";
@@ -85,35 +92,55 @@ const STEPS = [
   },
 ] as const;
 
-/* ── Solution data (for "What Happens Next") ─────────────────── */
+/* ── Solution data ────────────────────────────────────────────── */
 const SOLUTIONS = [
   {
-    diagnosticLabel: "Interoperability Test",
+    slug: "core-integration-middleware",
+    badge: "Foundation",
+    Icon: Network,
     title: "Core Integration Middleware",
+    valueProp: "Universal API layer between your legacy EHRs and any AI tool — real-time read/write access without ripping out existing infrastructure.",
+    painPoint: "Interoperability Test",
     description:
       "A centralised API and routing layer between legacy hospital systems and new AI applications. When the assessment reveals that EHRs are blocking third-party tools from pulling real-time data or writing back into the system, this acts as the universal translator — unlocking read/write access so AI tools work without latency.",
   },
   {
-    diagnosticLabel: "Data Health Profiler",
+    slug: "data-standardisation-etl",
+    badge: "Most Deployed",
+    Icon: DatabaseZap,
     title: "Data Standardisation & ETL Pipeline",
+    valueProp: "Clean, structured, normalised data before any AI touches it — resolving the exact gaps your profiler flagged.",
+    painPoint: "Data Health Profiler",
     description:
       "A data cleansing and pipeline service that resolves exactly the issues the profiler flags — missing fields, duplicates, unstructured free-text. If a hospital plugs AI into uncleaned data, it hallucinates. This solution structures and normalises their data before any AI deployment.",
   },
   {
-    diagnosticLabel: "Workflow Intelligence Analyzer",
+    slug: "workflow-orchestration-platform",
+    badge: null,
+    Icon: GitBranch,
     title: "Workflow Orchestration Platform",
+    valueProp: "AI output surfaced inside the EHR screens clinicians already use — zero new interfaces, zero adoption friction.",
+    painPoint: "Workflow Intelligence Analyzer",
     description:
       "A UI and workflow integration engine that embeds AI output directly into the EHR screens clinicians already use. When the assessment shows doctors switching through 15 screens per session, a standalone AI app will be ignored. This takes the AI\u2019s recommendations and places them where they\u2019ll actually be seen and acted on.",
   },
   {
-    diagnosticLabel: "Governance Gap Mapper",
+    slug: "compliance-audit-logging",
+    badge: null,
+    Icon: ShieldCheck,
     title: "Compliance & Audit Logging Engine",
+    valueProp: "Automatic logging of consent, data provenance, and every clinician AI override — so Legal and the CISO can say yes.",
+    painPoint: "Governance Gap Mapper",
     description:
       "A secure governance and tracking layer for AI models. When Legal and the CISO block deployment because they can\u2019t track data privacy or clinical liability, this automatically logs patient consent, data provenance, and every time a clinician accepts or overrides an AI recommendation.",
   },
   {
-    diagnosticLabel: "Opportunity Prioritizer",
+    slug: "managed-ai-deployment",
+    badge: "Full Service",
+    Icon: Rocket,
     title: "Managed AI Deployment",
+    valueProp: "End-to-end rollout of vetted AI applications — ambient scribes, patient flow predictors, clinical comms tools — with no in-house data scientists required.",
+    painPoint: "Opportunity Prioritizer",
     description:
       "End-to-end deployment of specific, vetted AI applications — ambient scribes, patient flow predictors, clinical communication tools. Once the assessment identifies the exact use case a hospital is ready for, we act as their deployment team to safely roll that tool into production. No in-house data scientists required.",
   },
@@ -285,90 +312,158 @@ function BentoCell({
   );
 }
 
-/* ── SolutionBlock ────────────────────────────────────────────── */
-function SolutionBlock({
+/* ── SolutionCard ─────────────────────────────────────────────── */
+function SolutionCard({
   solution,
-  isLast,
   index,
 }: {
   solution: (typeof SOLUTIONS)[number];
-  isLast: boolean;
   index: number;
 }) {
+  const [hovered, setHovered] = useState(false);
+  const { Icon } = solution;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45, delay: index * 0.06 }}
+      transition={{ duration: 0.45, delay: index * 0.07 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
+        position: "relative",
+        background: hovered
+          ? "linear-gradient(145deg, #13131A, #111118)"
+          : "#111118",
+        border: `1px solid ${hovered ? "#2A2A38" : "#1A1A1A"}`,
+        borderRadius: 6,
+        padding: 28,
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         gap: 0,
-        paddingTop: 48,
-        paddingBottom: isLast ? 0 : 48,
-        borderBottom: isLast ? "none" : "1px solid #1A1A1A",
+        transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
+        boxShadow: hovered
+          ? "0 0 32px rgba(0, 212, 170, 0.06), 0 8px 32px rgba(0,0,0,0.4)"
+          : "0 2px 12px rgba(0,0,0,0.3)",
       }}
-      className="solution-block"
     >
-      {/* Left: diagnostic link (~30%) */}
-      <div style={{ width: "30%", flexShrink: 0, paddingRight: 32, paddingTop: 2 }}>
-        <p
+      {/* Badge */}
+      {solution.badge && (
+        <span
           style={{
+            position: "absolute",
+            top: 20,
+            right: 20,
             fontFamily: "var(--font-dm-sans)",
             fontWeight: 400,
             fontSize: 10,
-            color: "#555",
-            letterSpacing: "0.1em",
+            color: "#00D4AA",
+            letterSpacing: "0.08em",
             textTransform: "uppercase",
-            marginBottom: 6,
+            border: "1px solid rgba(0, 212, 170, 0.25)",
+            borderRadius: 3,
+            padding: "3px 8px",
           }}
         >
-          When hospitals fail:
-        </p>
-        <p
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 400,
-            fontSize: 13,
-            color: "#888",
-          }}
-        >
-          {solution.diagnosticLabel}
-        </p>
-      </div>
+          {solution.badge}
+        </span>
+      )}
 
-      {/* Right: solution detail (~70%) */}
+      {/* Icon */}
       <div
         style={{
-          flex: 1,
-          borderLeft: "1px solid #1A1A1A",
-          paddingLeft: 32,
+          width: 36,
+          height: 36,
+          borderRadius: 8,
+          background: "rgba(0, 212, 170, 0.07)",
+          border: "1px solid rgba(0, 212, 170, 0.12)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 20,
+          transition: "background 0.3s, border-color 0.3s",
+          ...(hovered && {
+            background: "rgba(0, 212, 170, 0.12)",
+            borderColor: "rgba(0, 212, 170, 0.25)",
+          }),
         }}
       >
-        <h3
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 500,
-            fontSize: 16,
-            color: "#FFFFFF",
-            marginBottom: 8,
-          }}
-        >
-          {solution.title}
-        </h3>
-        <p
-          style={{
-            fontFamily: "var(--font-dm-sans)",
-            fontWeight: 300,
-            fontSize: 14,
-            color: "#666",
-            lineHeight: 1.7,
-          }}
-        >
-          {solution.description}
-        </p>
+        <Icon size={16} color={hovered ? "#00D4AA" : "#3A8A76"} strokeWidth={1.5} />
       </div>
+
+      {/* Title */}
+      <h3
+        style={{
+          fontFamily: "var(--font-dm-sans)",
+          fontWeight: 500,
+          fontSize: 15,
+          color: "#FFFFFF",
+          marginBottom: 10,
+          lineHeight: 1.3,
+          paddingRight: solution.badge ? 80 : 0,
+        }}
+      >
+        {solution.title}
+      </h3>
+
+      {/* Value prop */}
+      <p
+        style={{
+          fontFamily: "var(--font-dm-sans)",
+          fontWeight: 300,
+          fontSize: 13,
+          color: "#777",
+          lineHeight: 1.65,
+          flex: 1,
+          marginBottom: 24,
+        }}
+      >
+        {solution.valueProp}
+      </p>
+
+      {/* Pain-point tag */}
+      <p
+        style={{
+          fontFamily: "var(--font-dm-sans)",
+          fontWeight: 400,
+          fontSize: 10,
+          color: "#444",
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          marginBottom: 16,
+        }}
+      >
+        Flags in: {solution.painPoint}
+      </p>
+
+      {/* CTA */}
+      <a
+        href={`/solutions/${solution.slug}`}
+        style={{
+          fontFamily: "var(--font-dm-sans)",
+          fontWeight: 400,
+          fontSize: 13,
+          color: hovered ? "#00D4AA" : "#555",
+          textDecoration: "none",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          transition: "color 0.25s",
+          letterSpacing: "0.01em",
+        }}
+      >
+        Explore
+        <span
+          style={{
+            display: "inline-block",
+            transition: "transform 0.25s",
+            transform: hovered ? "translateX(3px)" : "translateX(0)",
+          }}
+        >
+          →
+        </span>
+      </a>
     </motion.div>
   );
 }
@@ -636,17 +731,37 @@ export default function ReadinessPage() {
         </div>
       </section>
 
-      {/* ── Section 4: What Happens Next ─────────────────── */}
+      {/* ── Section 4: The Integration Suite ─────────────── */}
       <section style={{ background: BG }}>
         <div style={{ ...INNER, paddingTop: 96, paddingBottom: 96 }}>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 400,
+              fontSize: 11,
+              color: "#00D4AA",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              marginBottom: 16,
+              borderTop: "1px solid #1A1A1A",
+              paddingTop: 48,
+            }}
+          >
+            Solutions
+          </motion.p>
+
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7 }}
-            style={{ ...H2, borderTop: "1px solid #1A1A1A", paddingTop: 48, marginBottom: 8 }}
+            style={{ ...H2, marginBottom: 8 }}
           >
-            What Happens Next
+            The Integration Suite
           </motion.h2>
 
           <motion.p
@@ -658,21 +773,23 @@ export default function ReadinessPage() {
               fontFamily: "var(--font-dm-sans)",
               fontWeight: 300,
               fontSize: 14,
-              color: "#666",
-              marginBottom: 48,
+              color: "#555",
+              marginBottom: 52,
+              maxWidth: 540,
             }}
           >
-            The assessment tells you where you stand. These are the solutions that close the gaps.
+            The assessment diagnoses. These products fix. Each solution maps
+            directly to a gap the diagnostic engine finds — and can be purchased
+            independently or deployed as a full stack.
           </motion.p>
 
-          <div>
+          {/* 3-col desktop / 2-col tablet / 1-col mobile */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            style={{ gap: 16 }}
+          >
             {SOLUTIONS.map((solution, i) => (
-              <SolutionBlock
-                key={solution.title}
-                solution={solution}
-                isLast={i === SOLUTIONS.length - 1}
-                index={i}
-              />
+              <SolutionCard key={solution.slug} solution={solution} index={i} />
             ))}
           </div>
         </div>
