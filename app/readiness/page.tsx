@@ -60,18 +60,28 @@ const DOMAINS = [
 const STEPS = [
   {
     number: "01",
-    title: "Multi-Stakeholder Assessment",
-    body: "Role-specific questionnaires for CIO, CMIO, nursing leadership, legal, operations, and department heads. Evidence upload for policies, architecture docs, and vendor agreements.",
+    title: "Interoperability & Data Profiling",
+    body: "We connect to your hospital's sandbox EHR environment and run a containerised data profiler behind your firewall. The interoperability test maps API availability, latency, and schema gaps across your systems. The data profiler — which never moves PHI off your network — analyses completeness, formatting consistency, duplication rates, and the balance of structured vs. free-text data.",
   },
   {
     number: "02",
-    title: "Scoring & Analysis",
-    body: "Weighted maturity models across all six domains. Specialty-specific scoring templates. Automated extraction of readiness evidence from uploaded documents.",
+    title: "Workflow & Process Intelligence",
+    body: "We ingest EHR audit logs to map how clinicians actually move through your systems — screen switches per session, time-in-system per patient, and specific delay points. This reveals the real workflow bottlenecks where AI can have the most impact, not the ones your vendor documentation assumes.",
   },
   {
     number: "03",
-    title: "Report & Roadmap",
-    body: "Board-ready report with scores, gaps, risks, and a prioritised implementation sequence. Benchmark against peer hospitals. Recommended use cases matched to your readiness profile.",
+    title: "Governance & Compliance Mapping",
+    body: "A rules-based policy engine evaluates your administrative readiness through structured questionnaires and uploaded policy documents. It flags missing clinical safety protocols, liability gaps, consent framework deficiencies, and privacy workflow issues — scored and mapped to each assessment domain.",
+  },
+  {
+    number: "04",
+    title: "Multi-Stakeholder Assessment",
+    body: "Role-specific questionnaires for CIO, CMIO, nursing leadership, legal, operations, and department heads. Evidence upload for architecture docs, vendor agreements, and DPIAs. This captures the organisational and people readiness that technical diagnostics can't measure.",
+  },
+  {
+    number: "05",
+    title: "Synthesis & Roadmap",
+    body: "All four diagnostic modules feed into a single scoring engine that ranks your requested AI use cases by feasibility, calculates a global readiness score, and generates a board-ready report. The output is a prioritised roadmap that prescribes exactly what needs to happen — and in what order — before AI can be deployed.",
   },
 ] as const;
 
@@ -258,7 +268,7 @@ function TimelineStep({
       style={{
         display: "flex",
         alignItems: "flex-start",
-        paddingBottom: isLast ? 0 : 72,
+        paddingBottom: isLast ? 0 : 56,
       }}
     >
       {/* Left column: node + connecting line */}
