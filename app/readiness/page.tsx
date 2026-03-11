@@ -75,19 +75,115 @@ const STEPS = [
   },
 ] as const;
 
-/* ── Deliverables data ────────────────────────────────────────── */
-const DELIVERABLES = [
-  { name: "Overall Readiness Score", desc: "Single composite score across all six domains." },
-  { name: "Domain-Level Scores", desc: "Strategy, data, governance, workflow, infrastructure, people." },
-  { name: "Use-Case Readiness Scores", desc: "e.g. \"AI discharge summaries: 82/100\", \"radiology triage: 54/100\"." },
-  { name: "Gap Analysis", desc: "Specific deficiencies mapped to each domain." },
-  { name: "Risk Heatmap", desc: "Visual representation of risk areas across the six domains." },
-  { name: "Priority Roadmap", desc: "Sequenced plan for reaching AI-readiness, ordered by impact and effort." },
-  { name: "Recommended First 3 Use Cases", desc: "Based on your specific system landscape and readiness profile." },
-  { name: "Infrastructure Checklist", desc: "Technical requirements for deployment, specific to your environment." },
-  { name: "Governance Checklist", desc: "Policy and compliance requirements before any AI goes live." },
-  { name: "ROI Opportunity Map", desc: "Estimated value of closing each identified gap." },
+/* ── Flip card data ───────────────────────────────────────────── */
+const CARDS = [
+  {
+    title: "Overall Readiness Score",
+    description: "A single composite score across all six assessment domains. Gives leadership one number to understand where the hospital stands — and how far there is to go.",
+  },
+  {
+    title: "Domain-Level Scores",
+    description: "Individual scores for strategy, data, governance, workflow, infrastructure, and people. Pinpoints exactly which domains are strong and which are holding back adoption.",
+  },
+  {
+    title: "Use-Case Readiness Scores",
+    description: "Scored readiness for specific AI applications — e.g., 'AI discharge summaries: 82/100', 'radiology triage: 54/100'. Shows which use cases are deployable now.",
+  },
+  {
+    title: "Gap Analysis",
+    description: "Specific deficiencies mapped to each domain. Not just 'data quality is low' but exactly which data elements are incomplete, from which systems, and what it takes to fix them.",
+  },
+  {
+    title: "Risk Heatmap",
+    description: "Visual representation of risk areas across all six domains. Red zones highlight blockers. Amber zones flag areas that need attention before deployment.",
+  },
+  {
+    title: "Priority Roadmap",
+    description: "A sequenced plan for reaching AI-readiness, ordered by impact and effort. Phase 1/2/3 structure with timelines, dependencies, and resource estimates.",
+  },
+  {
+    title: "Recommended First 3 Use Cases",
+    description: "Based on your specific system landscape, data maturity, and workflow readiness — not generic suggestions. The three AI applications most likely to succeed in your environment.",
+  },
+  {
+    title: "Infrastructure Checklist",
+    description: "Technical requirements for deployment, specific to your environment. Covers cloud policy, API readiness, identity management, event streaming, and monitoring.",
+  },
+  {
+    title: "Governance Checklist",
+    description: "Policy and compliance requirements before any AI goes live. Consent frameworks, DPIAs, model approval processes, clinical safety sign-off, and audit trails.",
+  },
+  {
+    title: "ROI Opportunity Map",
+    description: "Estimated value of closing each identified gap. Maps investment required against projected return — so leadership can prioritise with commercial clarity.",
+  },
 ] as const;
+
+/* ── FlipCard ─────────────────────────────────────────────────── */
+function FlipCard({ title, description }: { title: string; description: string }) {
+  const [flipped, setFlipped] = useState(false);
+
+  const handleClick = () => {
+    // Only toggle on tap (touch devices that lack hover)
+    if (!window.matchMedia("(hover: hover)").matches) {
+      setFlipped((f) => !f);
+    }
+  };
+
+  return (
+    <div
+      className={`flip-card-container${flipped ? " flipped" : ""}`}
+      style={{ perspective: "1000px", height: 260, cursor: "pointer" }}
+      onClick={handleClick}
+    >
+      <div className="flip-card-inner">
+        {/* Front */}
+        <div className="flip-card-front">
+          <span
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 500,
+              fontSize: 14,
+              color: "#FFFFFF",
+              lineHeight: 1.4,
+            }}
+          >
+            {title}
+          </span>
+        </div>
+
+        {/* Back */}
+        <div className="flip-card-back">
+          <div className="flip-card-back-inner">
+            <p
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 500,
+                fontSize: 13,
+                color: "#FFFFFF",
+                marginBottom: 10,
+                lineHeight: 1.4,
+              }}
+            >
+              {title}
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-dm-sans)",
+                fontWeight: 300,
+                fontSize: 12,
+                color: "#888",
+                lineHeight: 1.6,
+              }}
+            >
+              {description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ── BentoCell ────────────────────────────────────────────────── */
 function BentoCell({
@@ -338,7 +434,7 @@ export default function ReadinessPage() {
         </div>
       </section>
 
-      {/* ── Section 2: What You Get ──────────────────────── */}
+      {/* ── Section 2: What You Get — flip cards ─────────── */}
       <section style={{ background: BG }}>
         <div style={{ ...INNER, paddingTop: 96, paddingBottom: 96 }}>
           <motion.h2
@@ -351,47 +447,35 @@ export default function ReadinessPage() {
             What You Get
           </motion.h2>
 
-          <div style={{ maxWidth: 800 }}>
-            {DELIVERABLES.map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.04 }}
-                style={{
-                  borderTop: "1px solid #1A1A1A",
-                  paddingTop: 18,
-                  paddingBottom: 18,
-                  display: "flex",
-                  gap: 8,
-                  flexWrap: "wrap",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 500,
-                    fontSize: 14,
-                    color: "#FFFFFF",
-                  }}
-                >
-                  {item.name}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 300,
-                    fontSize: 14,
-                    color: "#666",
-                  }}
-                >
-                  — {item.desc}
-                </span>
-              </motion.div>
+          <p
+            style={{
+              fontFamily: "var(--font-dm-sans)",
+              fontWeight: 300,
+              fontSize: 13,
+              color: "#555",
+              marginTop: -32,
+              marginBottom: 32,
+            }}
+          >
+            Hover to explore each deliverable.
+          </p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
+            style={{ gap: 16 }}
+          >
+            {CARDS.map((card) => (
+              <FlipCard
+                key={card.title}
+                title={card.title}
+                description={card.description}
+              />
             ))}
-            <div style={{ borderTop: "1px solid #1A1A1A" }} />
-          </div>
+          </motion.div>
         </div>
       </section>
 

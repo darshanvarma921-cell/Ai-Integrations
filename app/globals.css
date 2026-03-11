@@ -128,6 +128,92 @@ body {
   animation: marquee-right linear infinite;
 }
 
+/* ─── Flip cards ────────────────────────────────────────── */
+
+@keyframes border-rotate {
+  from { transform: rotateZ(0deg); }
+  to   { transform: rotateZ(360deg); }
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 400ms ease;
+}
+
+@media (hover: hover) {
+  .flip-card-container:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-container:hover .flip-card-front {
+    border-color: #2A2A2A;
+  }
+}
+
+.flip-card-container.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: #111118;
+  border: 1px solid #1A1A1A;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.flip-card-back::before {
+  content: '';
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  top: -100%;
+  left: -100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 185, 129, 0.12),
+    rgba(16, 185, 129, 0.22),
+    rgba(16, 185, 129, 0.12),
+    transparent
+  );
+  animation: border-rotate 5000ms linear infinite;
+  z-index: 0;
+}
+
+.flip-card-back-inner {
+  position: absolute;
+  inset: 1px;
+  background: #111118;
+  border-radius: 3px;
+  z-index: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
 /* ─── Scrollbar ─────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 5px; }
 ::-webkit-scrollbar-track  { background: #0A0A0F; }
