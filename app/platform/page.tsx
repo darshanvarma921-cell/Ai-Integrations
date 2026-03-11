@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/landing/navbar";
+import { FocusRail } from "@/components/FocusRail";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const LAYERS = [
@@ -266,49 +267,7 @@ export default function PlatformPage() {
             Five Core Capabilities
           </motion.h2>
 
-          <div>
-            {CAPABILITIES.map((cap, i) => (
-              <motion.div
-                key={cap.title}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                variants={fadeUp}
-                style={{
-                  borderTop: "1px solid #1A1A1A",
-                  paddingTop: 28,
-                  paddingBottom: 28,
-                  display: "grid",
-                  gridTemplateColumns: "240px 1fr",
-                  gap: 48,
-                }}
-              >
-                <h3
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 500,
-                    fontSize: 15,
-                    color: "#FFFFFF",
-                  }}
-                >
-                  {cap.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "var(--font-dm-sans)",
-                    fontWeight: 300,
-                    fontSize: 14,
-                    color: "#666",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {cap.body}
-                </p>
-              </motion.div>
-            ))}
-            <div style={{ borderTop: "1px solid #1A1A1A" }} />
-          </div>
+          <FocusRail items={CAPABILITIES} />
         </div>
       </section>
 
